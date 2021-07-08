@@ -45,9 +45,7 @@
         <input
           type="text"
           id="product"
-          :value="
-            'stg' in request_data ? request_data.stg[0] || 'null' : 'null'
-          "
+          :value="'stg' in request_data ? request_data.stg[0] || ' ' : ' '"
         />
 
         <label for="state">Cтатус заявки:</label>
@@ -68,16 +66,26 @@
         <input type="text" id="crm" :value="crm" />
       </fieldset>
     </form>
+    Заявка принята: {{ add_time }}, последнее обновление: {{ last_upd_time }}
   </v-container>
 </template>
 
 <script>
+import df from "dateformat";
 export default {
   name: "RequestPage",
   props: ["id"],
   mounted() {
     this.$store.commit("setRequestPage", {});
     this.$store.dispatch("getRequestInfo", this.id);
+    const index = this.$store.state.tabs.findIndex(
+      (tab) => tab.key === "requests/" + this.id
+    );
+    if (index === -1)
+      this.$store.commit("addTab", {
+        name: "auf",
+        key: "requests/" + this.id,
+      });
   },
   computed: {
     request_data() {
@@ -91,6 +99,12 @@ export default {
     },
     crm() {
       return this.request_data?.extra?.crm_source_type;
+    },
+    add_time() {
+      return df(Date.parse(this.request_data.dadd), "dd.mm.yyyy - hh:mm");
+    },
+    last_upd_time() {
+      return df(Date.parse(this.request_data.lastUpd), "dd.mm.yyyy - hh:mm");
     },
   },
 };

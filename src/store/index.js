@@ -4,15 +4,21 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 const initial_tabs = (() => {
-  if (
-    localStorage.getItem("tabs") !== undefined ||
-    localStorage.getItem("tabs").length < 2
-  ) {
+  const current_tabs = JSON.parse(localStorage.getItem("tabs"));
+  if (current_tabs == null || current_tabs?.length < 2) {
+    localStorage.clear();
+    localStorage.setItem(
+      "tabs",
+      JSON.stringify([
+        { name: "Заявки", key: "" },
+        { name: "Счета", key: "accounts" },
+      ])
+    );
     return [
       { name: "Заявки", key: "" },
       { name: "Счета", key: "accounts" },
     ];
-  } else return localStorage.getItem("tabs");
+  } else return current_tabs;
 })();
 
 export default new Vuex.Store({
@@ -40,6 +46,10 @@ export default new Vuex.Store({
     },
     setRequestPage(state, page_obj) {
       state.request_page_info = page_obj;
+    },
+    addTab(state, tab_obj) {
+      state.tabs.push(tab_obj);
+      localStorage.setItem("tabs", JSON.stringify(state.tabs));
     },
   },
   actions: {

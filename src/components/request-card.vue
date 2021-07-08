@@ -11,46 +11,18 @@
       +{{ phone }}
     </v-card-subtitle>
     <v-card-text>{{ product }}</v-card-text>
-    <span class="request-card__add-date"
-      >{{ add_day }}.{{ add_month }}.{{ add_year }}-{{ add_hours }}:{{
-        add_minutes
-      }}</span
-    >
+    <span class="request-card__add-date">{{ add_date_str }}</span>
   </v-card>
 </template>
 
 <script>
+import df from "dateformat";
 export default {
   name: "request-card",
   props: ["name", "phone", "product", "num", "state", "dadd", "card_id"],
-  data() {
-    return {
-      add_date: new Date(this.dadd),
-    };
-  },
   computed: {
-    add_day: function () {
-      const day = this.add_date.getDate();
-      if (day < 10) return "0" + String(day);
-      else return day;
-    },
-    add_month: function () {
-      const month = this.add_date.getMonth() + 1;
-      if (month < 10) return "0" + String(month);
-      else return month;
-    },
-    add_year: function () {
-      return this.add_date.getFullYear();
-    },
-    add_hours: function () {
-      const hours = this.add_date.getHours();
-      if (hours < 10) return "0" + String(hours);
-      else return hours;
-    },
-    add_minutes: function () {
-      const minutes = this.add_date.getMinutes();
-      if (minutes < 10) return "0" + String(minutes);
-      else return minutes;
+    add_date_str() {
+      return df(Date.parse(this.dadd), "dd.mm.yyyy - hh:mm");
     },
   },
 };
