@@ -1,6 +1,6 @@
 <template>
   <v-container class="request-page">
-    <form @submit.prevent="">
+    <form @submit.prevent="" v-if="is_loaded">
       <h2 class="request-page__title">№{{ request_data.num }}</h2>
       <fieldset class="request-page__fieldset">
         <label for="client_name">Имя клиента:</label>
@@ -65,27 +65,46 @@
         <label for="crm">Источник заявки:</label>
         <input type="text" id="crm" :value="crm" />
       </fieldset>
+      Заявка принята: {{ add_time }}, последнее обновление: {{ last_upd_time }}
     </form>
-    Заявка принята: {{ add_time }}, последнее обновление: {{ last_upd_time }}
+    <loading-placeholders v-else></loading-placeholders>
   </v-container>
 </template>
 
 <script>
 import df from "dateformat";
+import Loaders from "@/components/loading-placeholders";
 export default {
   name: "RequestPage",
   props: ["id"],
+  data() {
+    return {
+      is_loaded: false,
+    };
+  },
   mounted() {
-    this.$store.commit("setRequestPage", {});
-    this.$store.dispatch("getRequestInfo", this.id);
-    const index = this.$store.state.tabs.findIndex(
-      (tab) => tab.key === "requests/" + this.id
-    );
-    if (index === -1)
-      this.$store.commit("addTab", {
-        name: "auf",
-        key: "requests/" + this.id,
-      });
+    this.$store.dispatch("getRequestInfo", this.id).then(() => {
+      this.is_loaded = true;
+      const index = this.$store.state.tabs.findIndex(
+        (tab) => tab.key === "requests/" + this.id
+      );
+      if (index === -1) {
+        this.$store.commit("addTab", {
+          name: this.request_data.num,
+          key: "requests/" + this.id,
+        });
+      }
+    });
+  },
+  watch: {
+    id: function (newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.is_loaded = false;
+        this.$store
+          .dispatch("getRequestInfo", this.id)
+          .then(() => (this.is_loaded = true));
+      }
+    },
   },
   computed: {
     request_data() {
@@ -101,17 +120,21 @@ export default {
       return this.request_data?.extra?.crm_source_type;
     },
     add_time() {
-      return df(Date.parse(this.request_data.dadd), "dd.mm.yyyy - hh:mm");
+      return df(Date.parse(this.request_data.dadd), "dd.mm.yyyy - HH:MM");
     },
     last_upd_time() {
-      return df(Date.parse(this.request_data.lastUpd), "dd.mm.yyyy - hh:mm");
+      return df(Date.parse(this.request_data.lastUpd), "dd.mm.yyyy - HH:MM");
     },
+  },
+  components: {
+    "loading-placeholders": Loaders,
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .request-page {
+  position: relative;
   &__title {
     text-align: right;
   }

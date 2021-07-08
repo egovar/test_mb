@@ -22,7 +22,7 @@ export default {
   props: ["name", "phone", "product", "num", "state", "dadd", "card_id"],
   computed: {
     add_date_str() {
-      return df(Date.parse(this.dadd), "dd.mm.yyyy - hh:mm");
+      return df(Date.parse(this.dadd), "dd.mm.yyyy - HH:MM");
     },
   },
 };
