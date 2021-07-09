@@ -4,7 +4,7 @@ import router from "@/router";
 
 Vue.use(Vuex);
 
-const initial_tabs = (() => {
+const initial_tabs = () => {
   const current_tabs = JSON.parse(localStorage.getItem("tabs"));
   if (current_tabs == null || current_tabs?.length < 2) {
     localStorage.clear();
@@ -20,11 +20,15 @@ const initial_tabs = (() => {
       { name: "Счета", key: "accounts" },
     ];
   } else return current_tabs;
-})();
+};
+// const find_max_num = (global, local) => {
+//   const num_arr = [...global, ...local].map((card) => card.num);
+//   return Math.max(...num_arr) + 1;
+// };
 
 export default new Vuex.Store({
   state: {
-    tabs: initial_tabs,
+    tabs: initial_tabs(),
     cards: [],
     local_cards: [],
     request_page_info: {},
@@ -55,6 +59,11 @@ export default new Vuex.Store({
     closeTab(state, index) {
       state.tabs.splice(index, 1);
       localStorage.setItem("tabs", JSON.stringify(state.tabs));
+    },
+    editCard(state, obj) {
+      const index = state.local_cards.findIndex((card) => card.id === obj.id);
+      if (index === -1) state.local_cards.push(obj);
+      else state.local_cards[index] = obj;
     },
   },
   actions: {

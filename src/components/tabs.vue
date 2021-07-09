@@ -38,7 +38,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.v-app-bar__nav-icon.v-btn--active:not(:hover)::before {
+  opacity: 0 !important;
+}
 .tab {
   position: relative;
   padding: 0 1.5rem;

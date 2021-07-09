@@ -1,5 +1,29 @@
 <template>
   <v-main id="requests" class="requests">
+    <v-dialog fullscreen transition="dialog-bottom-transition">
+      <template v-slot:activator="{ on }">
+        <v-btn
+          fab
+          class="requests__create-btn"
+          color="rgb(32, 66, 171)"
+          dark
+          v-on="on"
+        >
+          <v-icon>mdi-file-plus</v-icon>
+        </v-btn>
+      </template>
+      <template v-slot:default="dialog">
+        <v-card>
+          <v-toolbar color="rgb(32, 66, 171)" dark>
+            <v-btn icon dark @click="dialog.value = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+            <v-toolbar-title>Новая заявка</v-toolbar-title>
+          </v-toolbar>
+        </v-card>
+      </template>
+    </v-dialog>
+
     <v-container class="requests__container" v-if="is_loaded">
       <request-card
         v-for="card in cards"
@@ -45,6 +69,14 @@ export default {
 <style lang="scss" scoped>
 .requests {
   position: relative;
+  &__create-btn {
+    position: fixed;
+    bottom: 5rem;
+    right: 5rem;
+    &:focus::before {
+      opacity: 0;
+    }
+  }
   &__container {
     display: grid;
     gap: 1rem;
