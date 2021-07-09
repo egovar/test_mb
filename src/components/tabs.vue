@@ -5,16 +5,10 @@
       :key="tab.key"
       :to="'/' + tab.key"
       class="tabs__item tab"
+      @contextmenu.prevent="closeTab(tab.key)"
       exact
     >
       {{ tab.name }}
-      <v-icon
-        @click="closeTab(tab.key)"
-        v-if="tab.key !== '' && tab.key !== 'accounts'"
-        class="tab__close-icon"
-        small
-        >mdi-close-box</v-icon
-      >
     </v-tab>
   </v-tabs>
 </template>
@@ -29,30 +23,12 @@ export default {
   },
   methods: {
     closeTab: function (key) {
-      console.log(key + " tab might be closed(");
+      if (key !== "" && key !== "accounts") {
+        this.$store.dispatch("closeTabAndRedirect", key);
+      }
     },
   },
 };
 </script>
 
-<style lang="scss" scoped>
-.tab {
-  position: relative;
-  &__close-icon {
-    position: absolute;
-    height: 100%;
-    align-items: center;
-    right: 0.25rem;
-    z-index: 3;
-    &:hover {
-      &::before {
-        color: rgba(0, 0, 0, 0.7);
-      }
-    }
-    &::before {
-      color: rgba(0, 0, 0, 0.54);
-      margin-bottom: -2px;
-    }
-  }
-}
-</style>
+<style lang="scss" scoped></style>

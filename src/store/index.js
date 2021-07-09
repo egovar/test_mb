@@ -52,10 +52,10 @@ export default new Vuex.Store({
       state.tabs.push(tab_obj);
       localStorage.setItem("tabs", JSON.stringify(state.tabs));
     },
-    // closeTab(state, index) {
-    //   state.tabs.splice(index, 1);
-    //   localStorage.setItem("tabs", JSON.stringify(state.tabs));
-    // },
+    closeTab(state, index) {
+      state.tabs.splice(index, 1);
+      localStorage.setItem("tabs", JSON.stringify(state.tabs));
+    },
   },
   actions: {
     getRequestCards({ commit }) {
@@ -92,14 +92,16 @@ export default new Vuex.Store({
         }
       });
     },
-    // closeTabAndRedirect({ state: { tabs } }, key) {
-    //   const index = tabs.findIndex((tab) => tab.key === key);
-    //   console.log("/" + tabs[index].key === router.history.current.path);
-    //   console.log(tabs[index - 1]);
-    //   if ("/" + tabs[index].key === router.history.current.path) {
-    //     router.push({ path: "/" + tabs[index - 1].key }).then(() => {});
-    //   }
-    // },
+    closeTabAndRedirect({ state: { tabs }, commit }, key) {
+      const index = tabs.findIndex((tab) => tab.key === key);
+      console.log("/" + tabs[index].key === router.history.current.path);
+      console.log(tabs[index - 1]);
+      if ("/" + tabs[index].key === router.history.current.path) {
+        router.push({ path: "/" + tabs[index - 1].key }).then(() => {
+          commit("closeTab", index);
+        });
+      } else commit("closeTab", index);
+    },
   },
   modules: {},
 });
