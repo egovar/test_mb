@@ -28,27 +28,27 @@
             dark
             @click="
               save();
-              dialog.value = false;
+              $refs.form.validate() ? (dialog.value = false) : null;
             "
             >Сохранить</v-btn
           >
         </v-toolbar>
         <v-container>
-          <v-form>
+          <v-form ref="form">
             <v-text-field
               v-model="person_fullname"
               label="Имя клиента"
-              required
+              :rules="rule"
             ></v-text-field>
             <v-text-field
               v-model="person_phone"
               label="Номер телефона"
-              required
+              :rules="rule"
             ></v-text-field>
             <v-text-field
               v-model="person_email"
               label="email"
-              required
+              :rules="rule"
             ></v-text-field>
             <v-text-field
               v-model="company_name"
@@ -57,13 +57,17 @@
             <v-text-field
               v-model="company_type"
               label="Организационно-правовая форма"
-              required
+              :rules="rule"
             ></v-text-field>
-            <v-text-field v-model="inn" label="ИНН" required></v-text-field>
+            <v-text-field
+              v-model="inn"
+              label="ИНН"
+              :rules="rule"
+            ></v-text-field>
             <v-text-field
               v-model="stg[0]"
               label="Продукт"
-              required
+              :rules="rule"
             ></v-text-field>
             <h3>Дополнительная информация:</h3>
             <v-text-field
@@ -82,7 +86,7 @@
               class="create-request-modal__save-btn_bottom"
               @click="
                 save();
-                dialog.value = false;
+                $refs.form.validate() ? (dialog.value = false) : null;
               "
             >
               Сохранить
@@ -99,6 +103,7 @@ export default {
   name: "create-request-modal",
   data() {
     return {
+      rule: [(v) => !!v || "Обязательное поле"],
       person_fullname: "",
       person_phone: "",
       person_email: "",
@@ -117,23 +122,25 @@ export default {
   },
   methods: {
     save() {
-      const id = this.$store.getters.getNewLocalId;
-      this.$store.dispatch("createNewRequest", {
-        id: id,
-        num: this.$store.getters.getNewNum,
-        dadd: new Date().toISOString(),
-        lastUpd: new Date().toISOString(),
-        state: "init",
-        person_fullname: this.person_fullname,
-        client_name: this.person_fullname,
-        person_phone: this.person_phone,
-        person_email: this.person_email,
-        inn: this.inn,
-        company_name: this.company_name,
-        company_type: this.company_type,
-        stg: this.stg,
-        extra: this.extra,
-      });
+      if (this.$refs.form.validate()) {
+        const id = this.$store.getters.getNewLocalId;
+        this.$store.dispatch("createNewRequest", {
+          id: id,
+          num: this.$store.getters.getNewNum,
+          dadd: new Date().toISOString(),
+          lastUpd: new Date().toISOString(),
+          state: "init",
+          person_fullname: this.person_fullname,
+          client_name: this.person_fullname,
+          person_phone: this.person_phone,
+          person_email: this.person_email,
+          inn: this.inn,
+          company_name: this.company_name,
+          company_type: this.company_type,
+          stg: this.stg,
+          extra: this.extra,
+        });
+      }
     },
   },
 };
