@@ -9,6 +9,13 @@
       exact
     >
       {{ tab.name }}
+      <button
+        v-if="tab.key !== '' && tab.key !== 'accounts'"
+        @click.stop.prevent="closeTab(tab.key)"
+        class="tab__close-button"
+      >
+        <v-icon small class="tab__close-icon">mdi-close-box</v-icon>
+      </button>
     </v-tab>
   </v-tabs>
 </template>
@@ -31,4 +38,18 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.tab {
+  position: relative;
+  padding: 0 1.5rem;
+  &__close-button {
+    position: absolute;
+    right: 0.25rem;
+    color: rgba(0, 0, 0, 0.54);
+    margin-left: 1rem;
+    &:hover {
+      color: rgba(0, 0, 0, 0.8);
+    }
+  }
+}
+</style>

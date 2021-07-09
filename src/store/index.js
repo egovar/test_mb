@@ -94,8 +94,6 @@ export default new Vuex.Store({
     },
     closeTabAndRedirect({ state: { tabs }, commit }, key) {
       const index = tabs.findIndex((tab) => tab.key === key);
-      console.log("/" + tabs[index].key === router.history.current.path);
-      console.log(tabs[index - 1]);
       if ("/" + tabs[index].key === router.history.current.path) {
         router.push({ path: "/" + tabs[index - 1].key }).then(() => {
           commit("closeTab", index);
