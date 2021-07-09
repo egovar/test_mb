@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Requests from "@/views/Requests.vue";
 import RequestPage from "@/views/RequestPage";
+import Accounts from "@/views/Accounts";
 
 Vue.use(VueRouter);
 
@@ -19,7 +20,7 @@ const routes = [
   {
     path: "/accounts",
     name: "accounts",
-    component: Requests,
+    component: Accounts,
   },
 ];
 

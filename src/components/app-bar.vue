@@ -12,4 +12,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.v-app-bar__nav-icon.v-btn--active:not(:hover)::before {
+  opacity: 0 !important;
+}
+</style>

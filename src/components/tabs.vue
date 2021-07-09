@@ -39,9 +39,6 @@ export default {
 </script>
 
 <style lang="scss">
-.v-app-bar__nav-icon.v-btn--active:not(:hover)::before {
-  opacity: 0 !important;
-}
 .tab {
   position: relative;
   padding: 0 1.5rem;
@@ -54,5 +51,8 @@ export default {
       color: rgba(0, 0, 0, 0.8);
     }
   }
+}
+.v-slide-group__prev {
+  display: none !important;
 }
 </style>

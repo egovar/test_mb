@@ -21,10 +21,6 @@ const initial_tabs = () => {
     ];
   } else return current_tabs;
 };
-// const find_max_num = (global, local) => {
-//   const num_arr = [...global, ...local].map((card) => card.num);
-//   return Math.max(...num_arr) + 1;
-// };
 
 export default new Vuex.Store({
   state: {
@@ -32,6 +28,7 @@ export default new Vuex.Store({
     cards: [],
     local_cards: [],
     request_page_info: {},
+    account_cards: [],
   },
   getters: {
     getRequestCards({ local_cards, cards }) {
@@ -44,6 +41,13 @@ export default new Vuex.Store({
         } else return false;
       });
     },
+    getNewNum({ local_cards, cards }) {
+      const num_arr = [...cards, ...local_cards].map((card) => card.num);
+      return Math.max(...num_arr) + 1;
+    },
+    getNewLocalId({ local_cards }) {
+      return "local" + (local_cards.length + 1);
+    },
   },
   mutations: {
     setRequestCards(state, cards_obj) {
@@ -54,16 +58,25 @@ export default new Vuex.Store({
     },
     addTab(state, tab_obj) {
       state.tabs.push(tab_obj);
-      localStorage.setItem("tabs", JSON.stringify(state.tabs));
+      localStorage.setItem(
+        "tabs",
+        JSON.stringify(state.tabs.filter((tab) => tab.temp !== true))
+      );
     },
     closeTab(state, index) {
       state.tabs.splice(index, 1);
-      localStorage.setItem("tabs", JSON.stringify(state.tabs));
+      localStorage.setItem(
+        "tabs",
+        JSON.stringify(state.tabs.filter((tab) => tab.temp !== true))
+      );
     },
     editCard(state, obj) {
       const index = state.local_cards.findIndex((card) => card.id === obj.id);
       if (index === -1) state.local_cards.push(obj);
       else state.local_cards[index] = obj;
+    },
+    setAccountCards(state, obj) {
+      state.account_cards = obj;
     },
   },
   actions: {
@@ -108,6 +121,26 @@ export default new Vuex.Store({
           commit("closeTab", index);
         });
       } else commit("closeTab", index);
+    },
+    createNewRequest({ commit }, card_obj) {
+      return new Promise((resolve) => {
+        commit("editCard", card_obj);
+        resolve();
+      });
+    },
+    getAccountCards({ commit }) {
+      return new Promise((resolve, reject) => {
+        fetch(
+          "https://my-json-server.typicode.com/plushevy/demo/meetings"
+        ).then((res) => {
+          if (res.ok)
+            res.json().then((res_obj) => {
+              commit("setAccountCards", res_obj);
+              resolve();
+            });
+          else reject();
+        });
+      });
     },
   },
   modules: {},

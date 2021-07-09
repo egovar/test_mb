@@ -278,19 +278,26 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch("getRequestInfo", this.id).then(() => {
-      this.is_loaded = true;
-      this.request_data = this.$store.state.request_page_info;
-      const index = this.$store.state.tabs.findIndex(
-        (tab) => tab.key === "requests/" + this.id
-      );
-      if (index === -1) {
-        this.$store.commit("addTab", {
-          name: this.request_data.num,
-          key: "requests/" + this.id,
-        });
-      }
-    });
+    this.$store
+      .dispatch("getRequestInfo", this.id)
+      .then(() => {
+        this.is_loaded = true;
+        this.request_data = this.$store.state.request_page_info;
+        const index = this.$store.state.tabs.findIndex(
+          (tab) => tab.key === "requests/" + this.id
+        );
+        if (index === -1) {
+          this.$store.commit("addTab", {
+            name: this.request_data.num,
+            key: "requests/" + this.id,
+            temp: this.id.includes("local"),
+          });
+        }
+      })
+      .catch(() => {
+        alert("Страница не найдена");
+        this.$router.push("/");
+      });
   },
   watch: {
     id: function (newVal, oldVal) {
@@ -369,8 +376,16 @@ export default {
     }
   }
   &__fieldset:not([disabled]) > .request-page__input {
-    box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.25);
+    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
     border-radius: 5px;
+  }
+}
+@media screen and (max-width: 601px) {
+  .request-page {
+    &__edit-btn {
+      bottom: 2rem;
+      right: 2rem;
+    }
   }
 }
 </style>

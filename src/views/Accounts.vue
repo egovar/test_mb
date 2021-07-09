@@ -1,53 +1,50 @@
 <template>
-  <div id="requests" class="requests">
-    <create-request-modal></create-request-modal>
-    <v-container class="requests__container" v-if="is_loaded">
-      <request-card
+  <div class="accounts">
+    <v-container class="accounts__container" v-if="is_loaded">
+      <account-card
         v-for="card in cards"
-        :name="card.client_name"
-        :phone="card.person_phone"
-        :num="card.num"
-        :product="'stg' in card ? card.stg[0] : ''"
-        :state="card.state"
-        :dadd="card.dadd"
-        :card_id="card.id"
         :key="card.id"
-      ></request-card>
+        :client="card.client_name"
+        :phone="card.person_phone"
+        :state="card.meeting_state"
+        :city="card.client_city"
+        :place="card.meeting_place"
+        :date="card.meeting_date"
+        :product="'stg' in card ? card.stg[0] : '' || ''"
+        :bank="card.bank_name"
+      ></account-card>
     </v-container>
     <loading-placeholders v-else></loading-placeholders>
   </div>
 </template>
 
 <script>
-import RequestCard from "@/components/request-card";
 import Loaders from "@/components/loading-placeholders";
-import CreateRequest from "@/components/create-request-modal";
+import AccountCard from "@/components/account-card";
 export default {
-  name: "Requests",
-  mounted() {
-    this.$store.dispatch("getRequestCards").then(() => (this.is_loaded = true));
-  },
+  name: "Accounts",
   data() {
     return {
       is_loaded: false,
     };
   },
+  mounted() {
+    this.$store.dispatch("getAccountCards").then(() => (this.is_loaded = true));
+  },
   computed: {
     cards: function () {
-      return this.$store.getters.getRequestCards;
+      return this.$store.state.account_cards;
     },
   },
   components: {
-    "request-card": RequestCard,
     "loading-placeholders": Loaders,
-    "create-request-modal": CreateRequest,
+    "account-card": AccountCard,
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.requests {
-  position: relative;
+.accounts {
   &__container {
     display: grid;
     gap: 1rem;
@@ -55,21 +52,21 @@ export default {
   }
 }
 @media screen and (max-width: 961px) {
-  .requests {
+  .accounts {
     &__container {
       grid-template-columns: repeat(3, calc((100% - 2rem) / 3));
     }
   }
 }
 @media screen and (max-width: 601px) {
-  .requests {
+  .accounts {
     &__container {
       grid-template-columns: repeat(2, calc((100% - 1rem) / 2));
     }
   }
 }
 @media screen and (max-width: 401px) {
-  .requests {
+  .accounts {
     &__container {
       grid-template-columns: 100%;
     }
