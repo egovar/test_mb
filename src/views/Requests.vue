@@ -2,17 +2,19 @@
   <div id="requests" class="requests">
     <create-request-modal></create-request-modal>
     <v-container class="requests__container" v-if="is_loaded">
-      <request-card
-        v-for="card in cards"
-        :name="card.client_name"
-        :phone="card.person_phone"
-        :num="card.num"
-        :product="'stg' in card ? card.stg[0] : ''"
-        :state="card.state"
-        :dadd="card.dadd"
-        :card_id="card.id"
-        :key="card.id"
-      ></request-card>
+      <v-row justify="start">
+        <request-card
+          v-for="card in cards"
+          :name="card.client_name"
+          :phone="card.person_phone"
+          :num="card.num"
+          :product="'stg' in card ? card.stg[0] : ''"
+          :state="card.state"
+          :dadd="card.dadd"
+          :card_id="card.id"
+          :key="card.id"
+        ></request-card>
+      </v-row>
     </v-container>
     <loading-placeholders v-else></loading-placeholders>
   </div>
@@ -48,31 +50,5 @@ export default {
 <style lang="scss" scoped>
 .requests {
   position: relative;
-  &__container {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(4, calc((100% - 3rem) / 4));
-  }
-}
-@media screen and (max-width: 961px) {
-  .requests {
-    &__container {
-      grid-template-columns: repeat(3, calc((100% - 2rem) / 3));
-    }
-  }
-}
-@media screen and (max-width: 601px) {
-  .requests {
-    &__container {
-      grid-template-columns: repeat(2, calc((100% - 1rem) / 2));
-    }
-  }
-}
-@media screen and (max-width: 401px) {
-  .requests {
-    &__container {
-      grid-template-columns: 100%;
-    }
-  }
 }
 </style>

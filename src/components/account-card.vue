@@ -1,17 +1,19 @@
 <template>
-  <v-card class="account-card" elevation="2">
-    <v-card-title class="account-card__title"> {{ client }} </v-card-title>
-    <v-card-subtitle class="account-card__subtitle">
-      +{{ phone }}
-    </v-card-subtitle>
-    <v-card-text class="account-card__info">
-      <span class="account-card__product">{{ product }}</span>
-      <span class="account-card__bank">{{ bank }}</span>
-      <v-chip :class="'account-card__chip_' + state">{{ state }}</v-chip>
-      <span class="account-card__meeting-place">{{ city }}, {{ place }}</span>
-      <span class="account-card__meeting-date">{{ meeting_date }}</span>
-    </v-card-text>
-  </v-card>
+  <v-col align-self="stretch" md="3" sm="4" cols="12">
+    <v-card class="account-card" elevation="2" height="100%">
+      <v-card-title class="account-card__title"> {{ client }} </v-card-title>
+      <v-card-subtitle class="account-card__subtitle">
+        +{{ phone }}
+      </v-card-subtitle>
+      <v-card-text class="account-card__info">
+        <span class="account-card__product">{{ product }}</span>
+        <span class="account-card__bank">{{ bank }}</span>
+        <v-chip :class="'account-card__chip_' + state">{{ state }}</v-chip>
+        <span class="account-card__meeting-place">{{ city }}, {{ place }}</span>
+        <span class="account-card__meeting-date">{{ meeting_date }}</span>
+      </v-card-text>
+    </v-card>
+  </v-col>
 </template>
 
 <script>

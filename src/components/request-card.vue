@@ -1,18 +1,21 @@
 <template>
-  <v-card
-    class="request-card"
-    :class="'request-card_' + state"
-    elevation="2"
-    :to="'/requests/' + card_id"
-  >
-    <span class="request-card__number">№{{ num }} </span>
-    <v-card-title class="request-card__title"> {{ name }} </v-card-title>
-    <v-card-subtitle class="request-card__subtitle">
-      +{{ phone }}
-    </v-card-subtitle>
-    <v-card-text>{{ product }}</v-card-text>
-    <span class="request-card__add-date">{{ add_date_str }}</span>
-  </v-card>
+  <v-col cols="12" sm="4" md="3" align-self="stretch">
+    <v-card
+      class="request-card"
+      :class="'request-card_' + state"
+      elevation="2"
+      :to="'/requests/' + card_id"
+      height="100%"
+    >
+      <span class="request-card__number">№{{ num }} </span>
+      <v-card-title class="request-card__title"> {{ name }} </v-card-title>
+      <v-card-subtitle class="request-card__subtitle">
+        +{{ phone }}
+      </v-card-subtitle>
+      <v-card-text>{{ product }}</v-card-text>
+      <span class="request-card__add-date">{{ add_date_str }}</span>
+    </v-card>
+  </v-col>
 </template>
 
 <script>
