@@ -57,9 +57,16 @@ export default {
     }
   }
   &__info {
-    display: grid;
-    gap: 0.3rem;
-    place-items: center left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    & > *:not(:last-child):not(:empty) {
+      margin-bottom: 0.2rem;
+    }
+    & > .account-card__product:not(:empty) {
+      margin-bottom: 0.5rem;
+    }
   }
   &__title {
     display: block;
