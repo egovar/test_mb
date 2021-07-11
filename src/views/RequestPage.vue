@@ -97,9 +97,11 @@
           <option value="fin">Успешно завершена</option>
           <option value="err">Отменена</option>
         </select>
+      </fieldset>
 
-        <h3 class="request-page__subtitle">Дополнительная информация</h3>
+      <h3 class="request-page__subtitle">Дополнительная информация</h3>
 
+      <fieldset class="request-page__fieldset" :disabled="fieldset_disabled">
         <label class="request-page__label" for="partner">Партнер:</label>
         <input
           :placeholder="placeholder"
@@ -333,8 +335,7 @@ export default {
     margin-right: 2rem;
   }
   &__subtitle {
-    text-align: center;
-    margin: 1rem 0 1rem;
+    margin: 1.5rem 0 1rem;
     font-size: 1.5rem;
   }
   &__time {
@@ -344,24 +345,25 @@ export default {
   }
   &__fieldset {
     border: none;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 25% 1fr;
+    align-items: center;
+    gap: 0.5rem 1rem;
   }
   &__label {
-    text-align: center;
+    text-align: left;
     color: rgba(0, 0, 0, 0.8);
   }
   &__input {
-    text-align: center;
-    font-size: 1.5rem;
+    text-align: left;
+    font-size: 1.2rem;
     width: 100%;
-    margin: 0 auto 0.75rem;
     outline: none;
     transition: box-shadow 0.2s ease, border-radius 0.2s ease;
+    padding: 0 0.5rem;
     &_select {
       width: fit-content;
-      margin: auto;
-      padding: 0.5rem;
+      padding: 0.2rem 0.5rem;
       border-right: 0.5rem solid;
       outline: none;
     }
@@ -376,7 +378,7 @@ export default {
     }
   }
   &__fieldset:not([disabled]) > .request-page__input {
-    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
+    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.15);
     border-radius: 5px;
   }
 }
@@ -385,6 +387,14 @@ export default {
     &__edit-btn {
       bottom: 2rem;
       right: 2rem;
+    }
+  }
+}
+
+@media screen and (max-width: 401px) {
+  .request-page {
+    &__fieldset {
+      grid-template-columns: 1fr;
     }
   }
 }
