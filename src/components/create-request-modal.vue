@@ -103,7 +103,7 @@ export default {
   name: "create-request-modal",
   data() {
     return {
-      rule: [(v) => !!v || "Обязательное поле"],
+      rule: [(v) => !!v || "Обязательное поле"], //Проверка непустоты поля
       person_fullname: "",
       person_phone: "",
       person_email: "",

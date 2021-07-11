@@ -31,6 +31,7 @@ export default {
   methods: {
     closeTab: function (key) {
       if (key !== "" && key !== "accounts") {
+        //Вкладки с заявками и с счетами закрыть нельзя
         this.$store.dispatch("closeTabAndRedirect", key);
       }
     },

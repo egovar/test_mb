@@ -5,6 +5,7 @@ import router from "@/router";
 Vue.use(Vuex);
 
 const initial_tabs = () => {
+  // Восстановление вкладок из локального хранилища либо создание двух дефолтных и сохранение их в локальном хранилище
   const current_tabs = JSON.parse(localStorage.getItem("tabs"));
   if (current_tabs == null || current_tabs?.length < 2) {
     localStorage.clear();
@@ -60,14 +61,14 @@ export default new Vuex.Store({
       state.tabs.push(tab_obj);
       localStorage.setItem(
         "tabs",
-        JSON.stringify(state.tabs.filter((tab) => tab.temp !== true))
+        JSON.stringify(state.tabs.filter((tab) => tab.temp !== true)) //не сохраняем локально созданные заявки
       );
     },
     closeTab(state, index) {
       state.tabs.splice(index, 1);
       localStorage.setItem(
         "tabs",
-        JSON.stringify(state.tabs.filter((tab) => tab.temp !== true))
+        JSON.stringify(state.tabs.filter((tab) => tab.temp !== true)) //не сохраняем локально созданные заявки
       );
     },
     editCard(state, obj) {
@@ -123,6 +124,7 @@ export default new Vuex.Store({
       } else commit("closeTab", index);
     },
     createNewRequest({ commit }, card_obj) {
+      //Сделано действием, а не мутацией для лучшей расширяемости
       return new Promise((resolve) => {
         commit("editCard", card_obj);
         resolve();

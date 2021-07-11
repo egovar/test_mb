@@ -206,7 +206,7 @@ export default {
         return "stg" in this.request_data ? this.request_data.stg[0] || "" : "";
       },
       set(newVal) {
-        this.request_data.stg[0] = newVal;
+        this.request_data.stg = [newVal];
       },
     },
     request_state: {
@@ -290,7 +290,7 @@ export default {
           this.$store.commit("addTab", {
             name: this.request_data.num,
             key: "requests/" + this.id,
-            temp: this.id.includes("local"),
+            temp: this.id.includes("local"), //Чтобы не сохранять пользовательские вкладки в localStorage
           });
         }
       })
@@ -300,6 +300,7 @@ export default {
       });
   },
   watch: {
+    //При переключении между вкладками страниц заявок компонент не демонтируется, поэтому необходимо отслеживать изменение параметров
     id: function (newVal, oldVal) {
       if (newVal !== oldVal) {
         this.is_loaded = false;
