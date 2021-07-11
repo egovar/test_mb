@@ -346,7 +346,6 @@ export default {
     border: none;
     display: flex;
     flex-direction: column;
-    grid-template-columns: 25% 75%;
   }
   &__label {
     text-align: center;
